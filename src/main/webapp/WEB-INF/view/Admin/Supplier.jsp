@@ -57,7 +57,7 @@ Supplier
 	    
 	    <div class="form-group">
          <input class="form-control" placeholder="supplier_address"
-		type="text" id="description" name="description">
+		type="text" id="address" name="address">
 	    </div>
 	    
 	    
