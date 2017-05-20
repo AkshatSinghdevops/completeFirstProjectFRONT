@@ -6,26 +6,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.servlet.http.HttpServletRequest;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.niit.shoppingcart.homecontroller.ProductController;
 
 public class FileUtil {
 	
-	//private static Logger log = LoggerFactory.getLogger(FileUtil.class);
+	
 	//private static String workingDir = System.getProperty("user.dir");//D:\Softwares\IDE\eclipse-jee-neon-RC3-win32-x86_64\eclipse
-	  
+	
+	private static final String ABS_PATH ="D://akshat_project_files//21042017_FrontEndSecurityButNotWorking-master//src//main//webapp//resources//images";
+	private static String REAL_PATH="";
 	
   //"D:\\ShoppingCart\\Images";
-	public static void upload(String path, MultipartFile file, String fileName) {
-		//log.debug("Starting of the method upload");
-		//log.debug("Current Path :" + Paths.get("").toFile()	);
+	public static void upload(String path,MultipartFile file, String fileName) {
 		
 		if (!file.isEmpty()) {
 			
@@ -56,11 +57,87 @@ public class FileUtil {
 			e.printStackTrace();
 		}}
 		
-		//log.debug("Ending of the method upload");
+		
 
 	}
+
+	public static void uploadFile(HttpServletRequest request, MultipartFile file, String code) {
+		
+		
+		REAL_PATH=request.getSession().getServletContext().getRealPath("/resources/images/");
+		//log.info("REAL_PATH");
+		//log.debug("Current Path :" + Paths.get("").toFile()	);
+		
+		
+		if(!new File(ABS_PATH).exists())
+		{
+			new File(ABS_PATH).mkdirs();
+		}
+		
+		if(!new File(REAL_PATH).exists())
+		{
+			new File(REAL_PATH).mkdirs();
+		}
+		
+		try{
+			file.transferTo(new File("REAL_PATH" + file + ".jpg"));
+			file.transferTo(new File("ABS_PATH" + file + ".jpg"));
+		}
+		catch(IOException ex){
+			
+		}
+		//log.debug("Ending of the method upload");
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//using nio
+	public void fileCopy(String src, String dest)
+	{
+		
+	Path sourcePath=	  Paths.get(src);
+	Path destinationPath = Paths.get(dest);
+	
+	
+	try {
+		Files.copy(sourcePath, destinationPath);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+			
+			
+			
+	}
+}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 
 	
-}
