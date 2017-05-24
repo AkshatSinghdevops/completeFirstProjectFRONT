@@ -65,7 +65,7 @@ ${role}
   <div id="Tnavbar" class="navbar-collapse collapse">
   <ul class="nav navbar-nav ">
    <button type="button" class="btn btn-default dropdown-toggle"  style="margin:8px">
-  <li><a href="index" >Home</a></li>
+  <li><a href="index">Home</a></li>
   </button>
   <button type="button" class="btn btn-default dropdown-toggle"  style="margin:8px">
   <li><a href="AboutUs" >About us</a></li>
@@ -102,5 +102,8 @@ ${role}
 </div>
 </div>
 </nav>
+
+
+
 </body>
 </html>

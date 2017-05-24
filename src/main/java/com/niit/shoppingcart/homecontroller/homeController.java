@@ -9,16 +9,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.niit.shoppingcart.dao.CategoryDAO;
+import com.niit.shoppingcart.dao.MycartDAO;
 import com.niit.shoppingcart.dao.ProductDAO;
 import com.niit.shoppingcart.dao.SupplierDAO;
 import com.niit.shoppingcart.dao.UserDAO;
 import com.niit.shoppingcart.domain.Category;
+import com.niit.shoppingcart.domain.Mycart;
 import com.niit.shoppingcart.domain.Product;
 import com.niit.shoppingcart.domain.Supplier;
 import com.niit.shoppingcart.domain.User;
@@ -54,10 +57,16 @@ public class homeController {
 	@Autowired
 	private ProductDAO productDAO;
 	
+	@Autowired
+	private Mycart mycart;
+	
+	@Autowired
+	private MycartDAO  mycartDAO;
+	
 
 	
 	
-	@RequestMapping("/")
+	@RequestMapping(value={("/"),("index")})
 	public ModelAndView showHomePage()
 	{
 		
@@ -86,10 +95,11 @@ public class homeController {
 		ModelAndView mv = new ModelAndView("/index");
 		mv.addObject("msg", "  WELCOME TO LOGIN PAGE");
 		mv.addObject("isUserClickedLogin","true");
+		session.getAttribute("loginMessage");
 		return mv;
 	}
 
-	@RequestMapping("/Registration")
+	/*@RequestMapping("/Registration")
 	public ModelAndView showRegistrationPage()
 	{
 		ModelAndView mv = new ModelAndView("/index");
@@ -97,7 +107,39 @@ public class homeController {
 		mv.addObject("isUserClickedRegistration","true");
 		mv.addObject("user",user);
 		return mv;
+	}*/
+	
+	
+	@RequestMapping(value = "/Registration" , method=RequestMethod.POST)
+	public ModelAndView registerPage(@ModelAttribute User user,    @ModelAttribute("id")String id,@ModelAttribute("name")String name,
+			@ModelAttribute("password")String password,@ModelAttribute("mail")String mail,@ModelAttribute("contact")String contact)
+	{
+		
+	      user.setId(id);
+	      user.setMail(mail);
+	      user.setName(name);
+	      user.setPassword(password);
+	      user.setContact(contact);
+	      user.setRole("ROLE_USER");
+	      
+	      
+	      
+	      ModelAndView mv = new ModelAndView("/index");
+	      mv.addObject("isUserClickedRegistration","true");
+	  	mv.addObject("msg", "  WELCOME TO Registration page ");
+	  	mv.addObject("user",user);
+	      if(userDAO.save(user))
+	      {
+	    	  mv.addObject("successR", "Success To Registration");
+	      }
+	      else
+	      {
+	    	  mv.addObject("errorR" ,"you are not Register go to Page Contact or About us ");
+	      }
+	      return mv;
+	
 	}
+	
 	
 	@RequestMapping("/Contact")
 	public ModelAndView showContactPage()
@@ -146,10 +188,14 @@ public class homeController {
 			{
 				mv.addObject("isAdmin", "false");
 				mv.addObject("role", "User");
+				List<Mycart> mycartList  = mycartDAO.list();
+				mv.addObject("mycartList" , mycartList);
+				mv.addObject("mycart" , mycart);
 			}
 			
 			mv.addObject("successMessage", "Valid Credentials");
 			session.setAttribute("loginMessage", "Welcome :" +id);
+			
 		}
 		else
 		{
@@ -175,6 +221,14 @@ public class homeController {
 	{
 		ModelAndView mv = new ModelAndView("/index");
 		mv.addObject("isUserClickedMycart", "true");
+		
+		
+		List<Mycart> mycartList  = mycartDAO.list();
+		mv.addObject("mycartList" , mycartList);
+		mv.addObject("mycart" , mycart);
+		
+		
+		
 		return mv;
 	}
 	

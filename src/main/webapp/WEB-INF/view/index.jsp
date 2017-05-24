@@ -11,7 +11,14 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
+
+
+
+<spring:url value="/resources/core/css/ProductDesp.css"
+	var="ProductDesp"></spring:url>
+<link href="${ProductDesp}" rel="stylesheet">
+
+<spring:url value="/resources/images/" var="imag"></spring:url>
 </head>
 <body>
 
@@ -91,6 +98,64 @@
 <!-- ================================================================ -->
 
 
+
+
+<div class="row panel-heading"><h3><span class="glyphicon glyphicon-dashboard"></span><b>ProDuct List</b></h3></div>
+
+<c:forEach items="${productList}" var="product">
+
+	<div class="col-sm-3">
+		<article class="col-item">
+		<div class="photo">
+			<a href="<c:url value= '/details_get/${product.id}'/>"> 
+			<img src="resources/images/${product.id}.jpg" width="200"
+				class="img-responsive" alt="Product Image" />
+				
+			</a>
+		</div>
+		<div class="info">
+			<div class="row">
+				<div class="price-details col-md-6">
+					<p class="details">${product.description}</p>
+					<h1></h1>
+					<span class="price-new">${product.price}</span>
+				</div>
+			</div>
+			
+			<div class="separator clear-left">
+				<p class="btn-add">
+					<i class="fa fa-shopping-cart"></i>
+					
+					
+					
+					<a href="<c:url value= 'myCart/add/${product.id}'/>" class="hidden-sm">
+					
+					Add to cart
+					
+					</a>
+						
+				</p>
+				<p class="btn-details">
+					<a href="#" class="hidden-sm" data-toggle="tooltip"
+						data-placement="top" title="In stock Order it Fast"><i
+						class="fa fa-heart"></i></a>
+				</p>
+			</div>
+			
+			<div class="clearfix"></div>
+		</div>
+		</article>
+	</div>
+	
+</c:forEach>
+
+
+
+
+
+
+
+<!-- ========================================================================== -->
 
 
 

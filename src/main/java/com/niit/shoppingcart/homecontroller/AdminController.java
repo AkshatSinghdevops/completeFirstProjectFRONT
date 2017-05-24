@@ -83,6 +83,15 @@ public class AdminController {
 		 mv.addObject("productList",productList);
 		 mv.addObject("product",product);
 		 
+		 List<Supplier> supplierList  = supplierDAO.list();
+			mv.addObject("supplierList" , supplierList);
+			mv.addObject("supplier" , supplier);
+		 
+			
+			List<Category> categoryList=	categoryDAO.list();
+			  mv.addObject("categoryList", categoryList);
+			  mv.addObject("category", category);//To access category domain object in category.jsp
+				
 		 return mv;
 	}
 	
