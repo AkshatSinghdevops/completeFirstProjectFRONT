@@ -63,7 +63,7 @@ public class AdminController {
 	public ModelAndView manageSupplier()
 	{
 		System.out.println("Manage Suppplier");
-		ModelAndView mv = new ModelAndView("/index");
+		ModelAndView mv = new ModelAndView("/Admin/AdminHome");
 		mv.addObject("isUserClickedSupplier",true);
 		
 		List<Supplier> supplierList  = supplierDAO.list();
@@ -76,7 +76,7 @@ public class AdminController {
 	public ModelAndView manageProduct()
 	{
 		 System.out.println("manage product");
-		 ModelAndView mv = new ModelAndView("/index");
+		 ModelAndView mv = new ModelAndView("/Admin/AdminHome");
 		 mv.addObject("isUserClickedProduct","true");
 		 
 		 List<Product> productList =  productDAO.list();

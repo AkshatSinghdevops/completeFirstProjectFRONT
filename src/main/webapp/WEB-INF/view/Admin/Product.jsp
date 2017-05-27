@@ -359,7 +359,7 @@ ${message}<br>
 				
 					<div class="row">
 						<div class="col-sm-3">
-							<form:label path="">
+							<form:label path="id">Product Id
 								<spring:message text="Product Id" />
 							</form:label>
 						</div>
@@ -399,7 +399,7 @@ ${message}<br>
 
 							<c:forEach items="${supplierList}" var="supplier">
 
-								<form:option value="${supplier.id }">${supplier.id}</form:option>
+								<form:option value="${supplier.id }">${supplier.name} / ${supplier.id}</form:option>
 
 							</c:forEach>
 
@@ -419,7 +419,7 @@ ${message}<br>
 
 							<c:forEach items="${categoryList}" var="category">
 
-								<form:option value="${category.id }">${category.id}</form:option>
+								<form:option value="${category.id }">${category.name} / ${category.id}</form:option>
 
 							</c:forEach>
 

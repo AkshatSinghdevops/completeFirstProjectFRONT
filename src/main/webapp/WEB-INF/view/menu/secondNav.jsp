@@ -33,6 +33,7 @@ ${role}
 
 
 <ul class="nav navbar-nav navbar-right " >
+
          <c:if test="${isAdmin==false}">
         <button type="button" class="btn btn-success dropdown-toggle"  style="margin:8px">
        <li><a href="Mycart" style="color:#ffff00" class="social_icon" ><i class="fa fa-shopping-cart" aria-hidden="true" style="color:#fff;">My_Cart</i></a></li>
@@ -103,7 +104,9 @@ ${role}
 </div>
 </nav>
 
-
+<c:if test="${displayCart==true}">
+			<jsp:include page="../Mycart.jsp"></jsp:include>
+		</c:if>
 
 </body>
 </html>

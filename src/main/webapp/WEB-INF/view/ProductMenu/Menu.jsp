@@ -34,7 +34,8 @@
 
 					<ul class="dropdown-menu" role="menu">
 						<c:forEach items="${category.products}" var="product">
-							<li><a href="manage_product/get/${product.id}">${product.name}</a></li><li><%-- <a>${product.file}</a> --%></li>
+							<%-- <li><a href="manage_product/get/${product.id}">${product.name}</a></li><li></li> --%>
+							   <li><a href="<c:url value= '/NavigationPro/${product.id }'/>">${product.name}</a></li><li></li>
 						</c:forEach>
 					</ul></li>
 			</c:forEach>

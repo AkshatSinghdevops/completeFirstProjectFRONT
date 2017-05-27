@@ -162,7 +162,7 @@ public class ProductController {
 	}
 	
 	
-	@GetMapping("/manage_product_delete/{id}")
+	@GetMapping("/manage-product-delete/{id}")
 	public ModelAndView deleteProduct(@PathVariable("id") String id)
 	{
 		ModelAndView mv = new ModelAndView("forward:/manage_Product");
@@ -180,7 +180,7 @@ public class ProductController {
 		
 	}
 
-	@RequestMapping("manage_product_edit/{ID}")
+	@RequestMapping("manage_product_edit/{id}")
 	public String editProduct(@PathVariable("id") String id, Model model) {
 		// productDAO.saveOrUpdate(product);
 		//log.debug(" Starting of the method editProduct");
@@ -191,6 +191,23 @@ public class ProductController {
 		return "forward:/manage_products";
 	}
 	
-
-
+  /*  @RequestMapping("manage_product/get/{id}")
+    public ModelAndView showNaviPRO(@PathVariable("id")String id)
+    {
+    	
+    	ModelAndView mv = new ModelAndView("/NavigationPro");
+    	product = productDAO.get(id);
+    	
+    	
+    	//session.setAttribute("isProductClicked","true");
+		mv.addObject("product",  productDAO.getProductById(id));
+    	
+    	 List<Product> productList =  productDAO.list();
+		 mv.addObject("productList",productList);
+		 mv.addObject("product",product);
+    	
+    	return mv;
+    	
+    }
+*/
 }

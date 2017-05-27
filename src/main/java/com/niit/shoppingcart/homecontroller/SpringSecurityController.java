@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.niit.shoppingcart.dao.CategoryDAO;
+import com.niit.shoppingcart.dao.MycartDAO;
 import com.niit.shoppingcart.dao.ProductDAO;
 import com.niit.shoppingcart.dao.SupplierDAO;
 import com.niit.shoppingcart.dao.UserDAO;
 import com.niit.shoppingcart.domain.Category;
+import com.niit.shoppingcart.domain.Mycart;
 import com.niit.shoppingcart.domain.Product;
 import com.niit.shoppingcart.domain.Supplier;
 import com.niit.shoppingcart.domain.User;
@@ -48,69 +50,50 @@ public class SpringSecurityController {
 //
 //	@Autowired
 //	private MyCart myCart;
+	
+	@Autowired
+	private Mycart mycart;
+	
+	@Autowired
+	private MycartDAO  mycartDAO;
+	
+	@Autowired
+	private Category category;
+	
+	@Autowired
+	private  CategoryDAO categoryDAO;
 
 	
 	@Autowired
 	private HttpSession session;
 	
-	/*@RequestMapping(value = "/validaters")
-	public ModelAndView showvalidate(@RequestParam("username") String id, @RequestParam("password") String pwd) {
-
-		System.out.println("Mthod Called " + id + pwd);
-		ModelAndView mv = new ModelAndView("/home");
-		if (userDAO.validate(id, pwd) == true)
-		{
-			user = userDAO.getUser(id);
-			if (user.getRole().equals("Admin")) 
-			{
-				mv.addObject("isAdmin", "true");
-	session.setAttribute("AdminLoggedIn","true");
-	} else 
-			{
-				mv.addObject("isAdmin", "false");
-			}
-			mv.addObject("successMessage", "Valid Credentials ");
-			session.setAttribute("loginMessage", "Welcome :" + id);
-		}
-		else {
-			mv.addObject("errorMessage", "Invalid login Credentials");
-		}
-		return mv;
-		}	
-	*/
 	/*@RequestMapping(value = "validate", method = RequestMethod.GET)
 	public ModelAndView validate(HttpServletRequest request ,HttpServletRequest response) throws Exception
 	{
-		//log.debug("Starting of the method validate");
+		
 		ModelAndView mv = new ModelAndView("/index");
 		
 		Authentication auth= SecurityContextHolder.getContext().getAuthentication();
 		
 		String userID = auth.getName();
-		//log.info( userID );
+		System.out.println( userID );
 		session.setAttribute("loggedInUser", userID );
 		
-		if(request.isUserInRole("Role_Admin"))
+		if(request.isUserInRole("ROLE_ADMIN"))
 		{
-			//log.debug("Logged in as Admin");
+			System.out.println("Logged in as Admin");
 			session.setAttribute("isAdmin", "true");
 			session.setAttribute("AdminLoggedIn","true");
-			
-			
-			mv.addObject("isAdmin", "true");
-			mv.addObject("role", "Admin");
 		}
 		else{
-			//log.debug("Logged in as User");
+			System.out.println("Logged in as User");
 			session.setAttribute("isAdmin", "false");
-//			List<MyCart> cartList = cartDAO.list(name);
-//			mv.addObject("cartList"	, cartList);
-//			mv.addObject("cartSize", cartList.size());
-//			mv.addObject("totalAmount",cartDAO.getTotalAmount(userID));
 			
-			
-			mv.addObject("isAdmin", "false");
-			mv.addObject("role", "User");
+			List<Mycart> mycartList  = mycartDAO.list();
+			mv.addObject("mycartList" , mycartList);
+			mv.addObject("mycart" , mycart);
+			//mv.addObject("cartSize", cartList.size());
+			//mv.addObject("totalAmount",cartDAO.getTotalAmount(userID));
 			
 		}
 		mv.addObject("successMessage", "Valid Credentials ");
@@ -118,38 +101,44 @@ public class SpringSecurityController {
 	    
 	    session.setAttribute("loggedInUser", userID );
 	    
-		//log.debug("Ending of the method validate");
+		
 		return mv;
 	}*/
 	
 	//authentication-failure-forward-url="/loginError"
 		@RequestMapping(value = "/loginError", method = RequestMethod.GET)
 		public String loginError(Model model) {
-			//log.debug("Starting of the method loginError");
+			System.out.println("Starting of the method loginError");
 			model.addAttribute("errorMessage", "Invalid Credentials.  Please try again.");
-			//log.debug("Ending of the method loginError");
+			System.out.println("Ending of the method loginError");
 			return "/index";
 
 		}
 	//<security:access-denied-handler error-page="/accessDenied" />
 		@RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
 		public String accessDenied(Model model) {
-			//log.debug("Starting of the method accessDenied");
+			System.out.println("Starting of the method accessDenied");
 			model.addAttribute("errorMessage", "You are not authorized to access this page");
-			//log.debug("Ending of the method accessDenied");
+			System.out.println("Ending of the method accessDenied");
 			return "/index";
 
 		}
 		
-		@RequestMapping("/Logout")
-		public ModelAndView showLogoutpage() {
+		/*@RequestMapping("/logout")
+		public ModelAndView logout() {
+			System.out.println("Starting of the method logout");
+			ModelAndView mv = new ModelAndView("forward:/");
+			session.invalidate(); // will remove the attributes which are added
+									// session
+			session.setAttribute("category", category);
+			session.setAttribute("categoryList", categoryDAO.list());
 
-			ModelAndView mv = new ModelAndView("/index");
-			session.invalidate();
+			mv.addObject("logoutMessage", "You successfully logged out");
+			mv.addObject("loggedOut", "true");
+			
+		    
 			return mv;
-		}
-
-
+		}*/
 
 
 }

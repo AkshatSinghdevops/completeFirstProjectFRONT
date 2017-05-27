@@ -1,15 +1,18 @@
 package com.niit.shoppingcart.homecontroller;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -99,7 +102,7 @@ public class homeController {
 		return mv;
 	}
 
-	/*@RequestMapping("/Registration")
+	@RequestMapping("/Registration")
 	public ModelAndView showRegistrationPage()
 	{
 		ModelAndView mv = new ModelAndView("/index");
@@ -107,7 +110,7 @@ public class homeController {
 		mv.addObject("isUserClickedRegistration","true");
 		mv.addObject("user",user);
 		return mv;
-	}*/
+	}
 	
 	
 	@RequestMapping(value = "/Registration" , method=RequestMethod.POST)
@@ -124,7 +127,7 @@ public class homeController {
 	      
 	      
 	      
-	      ModelAndView mv = new ModelAndView("/index");
+	      ModelAndView mv = new ModelAndView("redirect:/index");
 	      mv.addObject("isUserClickedRegistration","true");
 	  	mv.addObject("msg", "  WELCOME TO Registration page ");
 	  	mv.addObject("user",user);
@@ -158,6 +161,7 @@ public class homeController {
 		return mv;
 	}
 	
+	
 
 
 	@RequestMapping("/validate")
@@ -171,6 +175,7 @@ public class homeController {
 		ModelAndView mv = new ModelAndView("/index");
 		mv.addObject("isUserLoggedIn", "false");
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
 		if( userDAO.validate(id, pwd)==true)
 		
 		{
@@ -183,15 +188,26 @@ public class homeController {
 			{   
 				mv.addObject("isAdmin", "true");
 				mv.addObject("role", "Admin");
+				session.setAttribute("isAdmin", "true");
+				session.setAttribute("AdminLoggedIn","true");
 			}
 			else
 			{
 				mv.addObject("isAdmin", "false");
 				mv.addObject("role", "User");
-				List<Mycart> mycartList  = mycartDAO.list();
+				/*List<Mycart> mycartList  = mycartDAO.list();
 				mv.addObject("mycartList" , mycartList);
-				mv.addObject("mycart" , mycart);
-			}
+				mv.addObject("mycart" , mycart);*/
+				
+				
+				
+				List<Mycart> cartList = mycartDAO.list(id);
+				mv.addObject("cartList"	, cartList);
+				mv.addObject("cartSize", cartList.size());
+				mv.addObject("totalAmount",mycartDAO.getTotalAmount(id));
+				
+				
+			} 
 			
 			mv.addObject("successMessage", "Valid Credentials");
 			session.setAttribute("loginMessage", "Welcome :" +id);
@@ -201,7 +217,7 @@ public class homeController {
 		{
 			mv.addObject("errorMessage", "InValid Credentials...please try again");
 		}
-		
+		session.setAttribute("loggedInUserID", id );
 		return mv;
 		
 		
@@ -212,6 +228,10 @@ public class homeController {
 	{
 		ModelAndView mv = new ModelAndView("/index");
 		session.removeAttribute("loginMessage");
+		
+		
+		session.setAttribute("category", category);
+		session.setAttribute("categoryList", categoryDAO.list());
 		return mv;
 				
 	}
@@ -223,14 +243,121 @@ public class homeController {
 		mv.addObject("isUserClickedMycart", "true");
 		
 		
-		List<Mycart> mycartList  = mycartDAO.list();
+		/*List<Mycart> mycartList  = mycartDAO.list();
 		mv.addObject("mycartList" , mycartList);
 		mv.addObject("mycart" , mycart);
+		*/
 		
+		List<Mycart> mycartList = mycartDAO.list((String) session.getAttribute("loggedInUserID"));
+		mv.addObject("mycartList"	, mycartList);
+		mv.addObject("mycartSize", mycartList.size());
+		mv.addObject("totalAmount",mycartDAO.getTotalAmount((String) session.getAttribute("loggedInUserID")));
 		
 		
 		return mv;
 	}
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping("/lastPage")
+	public ModelAndView showlastPage()
+	{
+
+		System.out.println("This is ***************lastPage");
+		
+		String loggedInUserid = (String) session.getAttribute("loggedInUserID");
+		
+		System.out.println("the logged in ********USER ID***********"+ loggedInUserid );
+		
+		if (loggedInUserid == null) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			loggedInUserid = auth.getName();
+			Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)   auth.getAuthorities();
+			authorities.contains("ROLE_USER");
+			
+		}
+		
+		System.out.println("the logged in ********USER ID***********"+ loggedInUserid );
+		
+		List<Mycart> cartlist = mycartDAO.list(loggedInUserid);
+		
+		int catsize = mycartDAO.list(loggedInUserid).size();
+		
+		System.out.println("the ****SIZE IS******"+catsize);
+	
+		for(Mycart listall : cartlist)
+		{
+			
+			mycart.setId(listall.getId());
+			
+			mycartDAO.delete(mycart);
+			
+			System.out.println("****THE CATSIZE**** "+catsize);
+		}
+		
+		ModelAndView mv = new ModelAndView("lastPage");
+		
+		System.out.println("This is end ************of lastpage");
+		return mv;
+	}
+
+	
+	@RequestMapping("/CheckoutPage")
+	public ModelAndView showCheckoutPage() {
+
+		System.out.println("**Starting OF ***************CHECK****OUT PAGE");
+		ModelAndView mv = new ModelAndView("/CheckoutPage");
+		System.out.println("**Ending  OF ***************CHECK****OUT PAGE");
+		return mv;
+	}
+	
+	@RequestMapping("/NextPage")
+	public ModelAndView nextpage() {
+		
+		ModelAndView mv = new ModelAndView("/NextPage");
+		return mv;
+	}
+	
+	
+	
+	
+	
+	 @RequestMapping(value = "/NavigationPro/{id}", method = RequestMethod.GET)
+	    public ModelAndView showNaviPRO(@PathVariable("id") String id)
+	    {
+	    	
+	    	ModelAndView mv = new ModelAndView("/NavigationPro");
+	    	product = productDAO.get(id);
+	    	Product product = productDAO.getProductById(id);
+	    	
+	    	//session.setAttribute("isProductClicked","true");
+			mv.addObject("product",  productDAO.getProductById(id));
+	    	
+	    	 List<Product> productList =  productDAO.list();
+			 mv.addObject("productList",productList);
+			 mv.addObject("product",product);
+	    	
+	    	return mv;
+	    	
+	    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	 
 }

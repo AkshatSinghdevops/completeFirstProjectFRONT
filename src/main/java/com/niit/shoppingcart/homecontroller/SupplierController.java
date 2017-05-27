@@ -33,7 +33,7 @@ public class SupplierController {
 			supplier.setname(name);
 			supplier.setaddress(address);
 			
-			ModelAndView mv = new ModelAndView("/Redirect:manage_category_create");
+			ModelAndView mv = new ModelAndView("redirect:/manage_category_create");
 			
 			if (supplierDAO.save(supplier))
 			{
