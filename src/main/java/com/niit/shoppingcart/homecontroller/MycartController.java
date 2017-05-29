@@ -119,7 +119,7 @@ public class MycartController {
 
 	}
 	@RequestMapping("/remove/{id}")
-	public ModelAndView RemoveFromCart(@PathVariable("id")Long id ){
+	public ModelAndView RemoveFromCart(@PathVariable("id")int id ){
 		
 		System.out.println("Staring of remove Method");
 		myCart.setId(id);

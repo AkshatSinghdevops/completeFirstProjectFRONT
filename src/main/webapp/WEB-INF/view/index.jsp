@@ -162,8 +162,8 @@
 
 
 
-
-<c:if test="${isUserCategoryPage==true}"><jsp:include page="Admin/Category.jsp"></jsp:include></c:if>
+<%-- <c:if test="${isUserClikedCheckout==true}"><jsp:include page="order/CheckoutPage.jsp"></jsp:include></c:if>
+ --%><c:if test="${isUserCategoryPage==true}"><jsp:include page="Admin/Category.jsp"></jsp:include></c:if>
 <c:if test="${isUserClickedMycart==true}"><jsp:include page="Mycart.jsp"></jsp:include>   </c:if>
 <c:if test="${isAdmin==true }"><jsp:include page="Admin/AdminHome.jsp"></jsp:include></c:if>
 <c:if test="${isUserClickedContact==true }"><jsp:include page="Contact.jsp"></jsp:include></c:if>
