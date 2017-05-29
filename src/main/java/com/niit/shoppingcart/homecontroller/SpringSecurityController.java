@@ -67,7 +67,7 @@ public class SpringSecurityController {
 	@Autowired
 	private HttpSession session;
 	
-	/*@RequestMapping(value = "validate", method = RequestMethod.GET)
+	@RequestMapping(value = "validate", method = RequestMethod.GET)
 	public ModelAndView validate(HttpServletRequest request ,HttpServletRequest response) throws Exception
 	{
 		
@@ -89,9 +89,9 @@ public class SpringSecurityController {
 			System.out.println("Logged in as User");
 			session.setAttribute("isAdmin", "false");
 			
-			List<Mycart> mycartList  = mycartDAO.list();
-			mv.addObject("mycartList" , mycartList);
-			mv.addObject("mycart" , mycart);
+			//List<Mycart> mycartList  = mycartDAO.list();
+			//mv.addObject("mycartList" , mycartList);
+			//mv.addObject("mycart" , mycart);
 			//mv.addObject("cartSize", cartList.size());
 			//mv.addObject("totalAmount",cartDAO.getTotalAmount(userID));
 			
@@ -99,11 +99,11 @@ public class SpringSecurityController {
 		mv.addObject("successMessage", "Valid Credentials ");
 	    session.setAttribute("loginMessage", "Welcome :" + userID);
 	    
-	    session.setAttribute("loggedInUser", userID );
+	    session.setAttribute("loggedInUserID", userID );
 	    
 		
 		return mv;
-	}*/
+	}
 	
 	//authentication-failure-forward-url="/loginError"
 		@RequestMapping(value = "/loginError", method = RequestMethod.GET)
@@ -124,7 +124,7 @@ public class SpringSecurityController {
 
 		}
 		
-		/*@RequestMapping("/logout")
+		@RequestMapping("/logout")
 		public ModelAndView logout() {
 			System.out.println("Starting of the method logout");
 			ModelAndView mv = new ModelAndView("forward:/");
@@ -138,7 +138,7 @@ public class SpringSecurityController {
 			
 		    
 			return mv;
-		}*/
+		}
 
 
 }

@@ -171,7 +171,7 @@ public class homeController {
 	
 
 
-	@RequestMapping("/validate")
+	/*@RequestMapping("/validate")
 	public ModelAndView validateCredentials(@RequestParam(value="id") String id,@RequestParam(value="password") String pwd)
 	{
 
@@ -202,9 +202,9 @@ public class homeController {
 			{
 				mv.addObject("isAdmin", "false");
 				mv.addObject("role", "User");
-				/*List<Mycart> mycartList  = mycartDAO.list();
+				List<Mycart> mycartList  = mycartDAO.list();
 				mv.addObject("mycartList" , mycartList);
-				mv.addObject("mycart" , mycart);*/
+				mv.addObject("mycart" , mycart);
 				
 				
 				
@@ -228,12 +228,12 @@ public class homeController {
 		return mv;
 		
 		
-	}
-	
+	}*/
+	/*
 	@RequestMapping("/logout")
 	public ModelAndView showlogout()
 	{
-		ModelAndView mv = new ModelAndView("/index");
+		ModelAndView mv = new ModelAndView("forward:/");
 		session.removeAttribute("loginMessage");
 		
 		
@@ -241,7 +241,7 @@ public class homeController {
 		session.setAttribute("categoryList", categoryDAO.list());
 		return mv;
 				
-	}
+	}*/
 	
 	@RequestMapping("/Mycart")
 	public ModelAndView showMycart()
@@ -342,8 +342,8 @@ public class homeController {
 	    public ModelAndView showNaviPRO(@PathVariable("id") String id)
 	    {
 	    	
-	    	ModelAndView mv = new ModelAndView("/NavigationPro");
-	    	product = productDAO.get(id);
+	    	ModelAndView mv = new ModelAndView("forward:/index");
+	    	//product = productDAO.get(id);
 	    	Product product = productDAO.getProductById(id);
 	    	
 	    	//session.setAttribute("isProductClicked","true");

@@ -48,7 +48,39 @@ public class MycartController {
 	
 	
 	
-	
+	@RequestMapping(value = "/myCart", method = RequestMethod.GET)
+	public String myCart(Model model) {
+		
+		
+		// get the logged-in user id
+		String loggedInUserid = (String) session.getAttribute("loggedInUserID");
+
+		if (loggedInUserid == null) {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			loggedInUserid = auth.getName();
+			Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)   auth.getAuthorities();
+			authorities.contains("ROLE_USER");
+			
+		}
+
+		int cartSize = mycartDAO.list(loggedInUserid).size();
+
+		if (cartSize == 0) {
+			model.addAttribute("errorMessage", "You do not have any products in your Cart :Plzs LOGin to Keep Shopping");
+		} else {
+			
+			model.addAttribute("cartList", mycartDAO.list(loggedInUserid));
+			model.addAttribute("myCart", "myCart");
+			model.addAttribute("totalAmount", mycartDAO.getTotalAmount(loggedInUserid));
+			
+			model.addAttribute("displayCart", "true");
+			
+
+		}
+		
+		return "/index";
+	}
+
 	
 	
 	

@@ -1,10 +1,14 @@
  package com.niit.shoppingcart.homecontroller;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +19,7 @@ import com.niit.shoppingcart.dao.SupplierDAO;
 import com.niit.shoppingcart.domain.Category;
 import com.niit.shoppingcart.domain.Product;
 import com.niit.shoppingcart.domain.Supplier;
+import com.niit.shoppingcart.domain.User;
 
 
 @Controller
@@ -42,10 +47,18 @@ public class AdminController {
 	@Autowired
 	HttpSession session;
 	
+	
+	
+	
+	
 
 	@RequestMapping("/manage_categories")
 	public ModelAndView manageCategories()
-	{   session.getAttribute("loggedInUser");
+	{  
+		
+		 session.getAttribute("loggedInUser");
+//=====================================================================================================
+		session.getAttribute("loggedInUserID");
 		System.out.println("manageCategories");
 		ModelAndView mv = new ModelAndView("/Admin/AdminHome");
 		mv.addObject("isUserCategoryPage","true");
@@ -61,7 +74,7 @@ public class AdminController {
 	
 	@RequestMapping("/manage_Supplier")
 	public ModelAndView manageSupplier()
-	{
+	{session.getAttribute("loggedInUserID");
 		System.out.println("Manage Suppplier");
 		ModelAndView mv = new ModelAndView("/Admin/AdminHome");
 		mv.addObject("isUserClickedSupplier",true);
@@ -74,7 +87,7 @@ public class AdminController {
 	
 	@RequestMapping("/manage_Product")
 	public ModelAndView manageProduct()
-	{
+	{session.getAttribute("loggedInUserID");
 		 System.out.println("manage product");
 		 ModelAndView mv = new ModelAndView("/Admin/AdminHome");
 		 mv.addObject("isUserClickedProduct","true");
